@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct Services {
     static func fetchWeatherFor(city: String) async throws -> WeatherResponse? {
@@ -17,7 +18,7 @@ struct Services {
         return response
     }
     
-    static func fetchCurrentWeather(lat: Double, lon: Double) async throws -> WeatherResponse? {
+    static func fetchCurrentWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) async throws -> WeatherResponse? {
         guard let url = Urls.getCurrentWeatherURL(lat: lat, lon: lon) else { throw URLError(.badURL) }
         
         let (data, _) = try await URLSession.shared.data(from: url)

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CoreLocation
 
 @MainActor
 class WeatherViewModel: ObservableObject {
@@ -37,7 +38,7 @@ class WeatherViewModel: ObservableObject {
             weatherResponse = try await  Services.fetchWeatherFor(city: city)
     }
     
-    func fetchCurrentWeather(lat: Double, lon: Double) async throws {
+    func fetchCurrentWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) async throws {
         weatherResponse = try await Services.fetchCurrentWeather(lat: lat, lon: lon)
     }
 }

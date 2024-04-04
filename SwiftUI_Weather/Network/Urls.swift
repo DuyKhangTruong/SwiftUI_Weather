@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import CoreLocation
+
 
 struct Urls {
     static func getWeatherCityURL(_ cityName: String) -> URL? {
@@ -14,7 +16,7 @@ struct Urls {
         return URL(string: Constants.baseURL + "&\(enpoint)")
     }
     
-    static func getCurrentWeatherURL(lat: Double, lon: Double) -> URL? {
+    static func getCurrentWeatherURL(lat: CLLocationDegrees, lon: CLLocationDegrees) -> URL? {
         let enpoint = "lat=\(lat)&lon=\(lon)"
         
         return URL(string: Constants.baseURL + "&\(enpoint)")

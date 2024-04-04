@@ -32,16 +32,7 @@ struct ContentView: View {
         }
         .padding(.horizontal)
         .task {
-            do {
-                locationManager.requestLocationPermission()
-                if let location = locationManager.location {
-                    try await weatherVM.fetchCurrentWeather(lat: location.latitude.magnitude, lon: location.longitude.magnitude)
-                    assignValues()
-                }
-            } catch {
-                print("Error requesting location or fetching weather: \(error.localizedDescription)")
-            }
-            
+            await updateWeatherWithLocation()
         }
     }
     
@@ -113,11 +104,7 @@ struct ContentView: View {
     var locationButton: some View {
         Button {
             Task {
-                locationManager.requestLocation()
-                if let location = locationManager.location {
-                    try await weatherVM.fetchCurrentWeather(lat: location.latitude.magnitude, lon: location.latitude.magnitude)
-                    assignValues()
-                }
+                await updateWeatherWithLocation()
             }
         } label: {
             Image(systemName: "location.circle.fill")
@@ -143,6 +130,19 @@ struct ContentView: View {
     func getWeatherInfo() async throws {
         try await weatherVM.fetchWeatherFor(city: searchCity)
         assignValues()
+    }
+    
+    func updateWeatherWithLocation() async {
+        do {
+            locationManager.requestLocationPermission()
+            locationManager.requestLocation()
+            if let location = locationManager.location {
+                try await weatherVM.fetchCurrentWeather(lat: location.latitude, lon: location.longitude)
+                assignValues()
+            }
+        } catch {
+            print("Error requesting location or fetching weather: \(error.localizedDescription)")
+        }
     }
     
     func assignValues() {
